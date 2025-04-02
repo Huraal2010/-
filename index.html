@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مدير المهام الشخصية</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            direction: rtl;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        /* تنسيقات نموذج تسجيل الدخول */
+        .auth-container {
+            max-width: 400px;
+            margin: 50px auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .auth-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .auth-btn.secondary {
+            background-color: #2196F3;
+        }
+        .auth-toggle {
+            text-align: center;
+            margin-top: 15px;
+            color: #666;
+        }
+        .auth-toggle a {
+            color: #2196F3;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        /* تنسيقات تطبيق المهام */
+        .task-form {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .task-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .task-date {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+        .add-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin-right: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .task-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .task-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .task-item:hover {
+            background-color: #f9f9f9;
+        }
+        .task-content {
+            flex: 1;
+            margin-right: 10px;
+        }
+        .task-text {
+            display: block;
+        }
+        .completed {
+            text-decoration: line-through;
+            color: #888;
+        }
+        .task-due {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .task-due.overdue {
+            color: #F44336;
+            font-weight: bold;
+        }
+        .task-actions button {
+            margin-right: 5px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            color: white;
+        }
+        .complete-btn {
+            background-color: #2196F3;
+        }
+        .edit-btn {
+            background-color: #FF9800;
+        }
+        .delete-btn {
+            background-color: #F44336;
+        }
+        .stats {
+            margin-top: 20px;
+            text-align: center;
+            color: #666;
+        }
+        .user-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .logout-btn {
+            background-color: #F44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .connection-status {
+            font-size: 14px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- نموذج تسجيل الدخول وإنشاء حساب -->
+    <div id="authContainer" class="auth-container">
+        <h1>مدير المهام الشخصية</h1>
+        
+        <!-- نموذج تسجيل الدخول -->
+        <div id="loginForm" class="auth-form">
+            <div class="form-group">
+                <label for="loginUsername">اسم المستخدم</label>
+                <input type="text" id="loginUsername" placeholder="أدخل اسم المستخدم">
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">كلمة المرور</label>
+                <input type="password" id="loginPassword" placeholder="أدخل كلمة المرور">
+            </div>
+            <button class="auth-btn" onclick="login()">تسجيل الدخول</button>
+            <div class="auth-toggle">
+                ليس لديك حساب؟ <a onclick="showRegisterForm()">إنشاء حساب جديد</a>
+            </div>
+        </div>
+        
+        <!-- نموذج إنشاء حساب -->
+        <div id="registerForm" class="auth-form" style="display: none;">
+            <div class="form-group">
+                <label for="registerUsername">اسم المستخدم</label>
+                <input type="text" id="registerUsername" placeholder="أدخل اسم المستخدم">
+            </div>
+            <div class="form-group">
+                <label for="registerPassword">كلمة المرور</label>
+                <input type="password" id="registerPassword" placeholder="أدخل كلمة المرور">
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">تأكيد كلمة المرور</label>
+                <input type="password" id="confirmPassword" placeholder="أعد إدخال كلمة المرور">
+            </div>
+            <button class="auth-btn" onclick="register()">إنشاء حساب</button>
+            <div class="auth-toggle">
+                لديك حساب بالفعل؟ <a onclick="showLoginForm()">تسجيل الدخول</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- تطبيق إدارة المهام (سيظهر بعد تسجيل الدخول) -->
+    <div id="appContainer" class="container" style="display: none;">
+        <h1>مدير المهام الشخصية</h1>
+        
+        <div class="user-info">
+            <span id="userWelcome">مرحبًا، </span>
+            <div>
+                <span id="connectionStatus" class="connection-status">متصل</span>
+                <button class="logout-btn" onclick="logout()">تسجيل الخروج</button>
+            </div>
+        </div>
+        
+        <div class="task-form">
+            <input type="text" id="taskInput" class="task-input" placeholder="أدخل مهمة جديدة...">
+            <input type="datetime-local" id="taskDateTime" class="task-date">
+            <button class="add-btn" onclick="addTask()">إضافة</button>
+        </div>
+        
+        <ul id="taskList" class="task-list">
+            <!-- ستضاف المهام هنا بواسطة JavaScript -->
+        </ul>
+        
+        <div class="stats">
+            <p>المهام المكتملة: <span id="completedTasks">0</span> من <span id="totalTasks">0</span></p>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    
+    <script src="app.js"></script>
+</body>
+</html>
